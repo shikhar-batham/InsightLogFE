@@ -15,7 +15,8 @@ public class RetrofitService {
 
     void initializeRetrofit() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:8080")
+//                .baseUrl("http://192.168.84.235:8080")
+                .baseUrl("http://viaduct.proxy.rlwy.net:20239")
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
     }
