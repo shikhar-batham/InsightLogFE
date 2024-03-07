@@ -174,80 +174,12 @@
 
         </LinearLayout>
 
-        <GridLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="3">
+            android:layout_height="match_parent"
+            android:id="@+id/gridRecycler"
+            tools:listitem="@layout/recycler_profile_grid_layout" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/a"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"
-                />
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/b"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/c"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/d"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"
-                />
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/e"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/f"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/g"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"
-                />
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/h"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/i"
-                android:background="#2D0B0808"
-                android:layout_margin="10dp"/>
-
-
-
-        </GridLayout>
 
     </RelativeLayout>
 

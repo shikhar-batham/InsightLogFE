@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.insightlogfe.R;
+import com.example.insightlogfe.fragments.HomeFragment;
 import com.example.insightlogfe.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -34,11 +35,14 @@ public class HomeActivity extends AppCompatActivity {
                     loadFrag(new ProfileFragment(), 0);
                 }
 
+                else if (id == R.id.nav_home) {
+                    loadFrag(new HomeFragment(), 0);
+                }
+
                 return true;
             }
         });
-        homeBottomNavigationContainer.setSelectedItemId(R.id.nav_profile);
-
+        homeBottomNavigationContainer.setSelectedItemId(R.id.nav_home);
     }
 
     public void loadFrag(Fragment fragment, int flag) {
