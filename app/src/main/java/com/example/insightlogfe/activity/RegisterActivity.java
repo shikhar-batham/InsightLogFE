@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     UserDto apiUserDto = response.body();
                     logMessage("Api call successful");
-                    startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 }
 
             }
