@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.insightlogfe.Adapters.RecyclerGridAdapter;
 import com.example.insightlogfe.R;
@@ -18,7 +19,11 @@ import com.example.insightlogfe.model.ProfileModelGrid;
 import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
-RecyclerView gridRecycler;
+
+    private ImageView userProfilePicture;
+
+    RecyclerView gridRecycler;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -33,8 +38,7 @@ RecyclerView gridRecycler;
 
     @Override
     public void
-    onViewCreated(View view, Bundle savedInstanceState)
-    {
+    onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);   // getting the employeelist
         ArrayList<ProfileModelGrid> gridList = GridConstants.GridData();
         // Assign employeelist to ItemAdapter
@@ -42,7 +46,7 @@ RecyclerView gridRecycler;
         // Set the LayoutManager that
         // this RecyclerView will use.
         RecyclerView recyclerView = view.findViewById(R.id.gridRecycler);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         RecyclerGridAdapter profileAdapter = new RecyclerGridAdapter(gridList, getContext());
         // adapter instance is set to the
         // recyclerview to inflate the items.

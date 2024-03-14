@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 
 public class HomeFragment extends Fragment {
+
+
     RecyclerView feedRecycler,storyRecycler;
     public HomeFragment() {
         // Required empty public constructor
