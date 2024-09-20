@@ -1,7 +1,5 @@
 package com.example.insightlogfe.payload;
 
-
-
 public class JwtAuthRequest {
 
     //we have considered email as username

@@ -11,7 +11,7 @@ import com.example.insightlogfe.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnSignIn, btnSignUp, btnHome;
+    Button btnSignIn, btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         btnSignIn = findViewById(R.id.btnSignIn);
         btnSignUp = findViewById(R.id.btnSignUp);
-        btnHome = findViewById(R.id.btnHome);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,11 +35,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, HomeActivity.class));
-            }
-        });
     }
 }

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/userProfile"
     tools:context=".activity.MainActivity">
 
     <RelativeLayout
@@ -23,6 +22,7 @@
             android:background="@drawable/circle_img_bg">
 
             <ImageView
+                android:id="@+id/user_profile_img"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="9dp"
@@ -30,53 +30,30 @@
                 android:layout_marginEnd="9dp"
                 android:layout_marginBottom="9dp"
                 android:adjustViewBounds="true"
-                android:id="@+id/img_user_img"
-                android:padding="3dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/o" />
+                android:padding="1dp"
+                android:src="@drawable/ic_person" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="43dp"
-                android:layout_height="44dp"
-                android:layout_alignRight="@+id/img_user_img"
-                android:layout_alignBottom="@id/img_user_img"
-                android:background="@color/black"
-                android:id="@+id/btnUserImg"
-                android:src="@drawable/baseline_image_24" />
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15sp"
+            android:layout_marginTop="5sp"
             android:fontFamily="sans-serif-light"
-            android:text="Joey Tribbiani"
+            android:text="username"
             android:textColor="@color/white"
             android:textSize="32sp" />
-
-
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_name"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
-            android:text="new york, usa"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
             android:src="@drawable/baseline_settings_24" />
@@ -90,79 +67,79 @@
         android:layout_below="@id/rellay1"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="#72D6E3"
-            android:gravity="center"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+        <!--        <RelativeLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="#72D6E3"-->
+        <!--            android:gravity="center"-->
+        <!--            android:paddingTop="5dp"-->
+        <!--            android:paddingBottom="5dp">-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:gravity="center_horizontal"-->
+        <!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="453K"
-                    android:textColor="@color/black"
-                    android:textSize="25sp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="sans-serif-light"-->
+        <!--                    android:text="453K"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="25sp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="followers"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="sans-serif-light"-->
+        <!--                    android:text="followers"-->
+        <!--                    android:textAllCaps="true"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="13sp" />-->
 
-            </LinearLayout>
+        <!--            </LinearLayout>-->
 
-        </RelativeLayout>
+        <!--        </RelativeLayout>-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="#407CAC"
-            android:gravity="center"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+        <!--        <RelativeLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="#407CAC"-->
+        <!--            android:gravity="center"-->
+        <!--            android:paddingTop="5dp"-->
+        <!--            android:paddingBottom="5dp">-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:gravity="center_horizontal"-->
+        <!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="873"
-                    android:textColor="@color/white"
-                    android:textSize="25sp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="sans-serif-light"-->
+        <!--                    android:text="873"-->
+        <!--                    android:textColor="@color/white"-->
+        <!--                    android:textSize="25sp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="following"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="sans-serif-light"-->
+        <!--                    android:text="following"-->
+        <!--                    android:textAllCaps="true"-->
+        <!--                    android:textColor="@color/white"-->
+        <!--                    android:textSize="13sp" />-->
 
-            </LinearLayout>
+        <!--            </LinearLayout>-->
 
-        </RelativeLayout>
+        <!--        </RelativeLayout>-->
 
     </LinearLayout>
 
@@ -177,16 +154,16 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
             android:orientation="vertical">
 
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profile_page_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/gridRecycler"
             tools:listitem="@layout/recycler_profile_grid_layout" />
 
 

@@ -1,23 +1,22 @@
 package com.example.insightlogfe.activity;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.example.insightlogfe.R;
+import com.example.insightlogfe.fragments.CreatePostFragment;
 import com.example.insightlogfe.fragments.HomeFragment;
 import com.example.insightlogfe.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
-    BottomNavigationView homeBottomNavigationContainer;
+    private BottomNavigationView homeBottomNavigationContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +32,10 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (id == R.id.nav_profile) {
                     loadFrag(new ProfileFragment(), 0);
-                }
-
-                else if (id == R.id.nav_home) {
+                } else if (id == R.id.nav_home) {
                     loadFrag(new HomeFragment(), 0);
+                } else if (id == R.id.nav_create_post) {
+                    loadFrag(new CreatePostFragment(), 0);
                 }
 
                 return true;
