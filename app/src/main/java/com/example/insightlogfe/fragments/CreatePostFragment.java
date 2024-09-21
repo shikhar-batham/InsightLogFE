@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -15,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.insightlogfe.Constants.IntentConstants;
 import com.example.insightlogfe.Constants.PrefConstants;
@@ -53,6 +56,8 @@ public class CreatePostFragment extends Fragment implements BaseFragment {
     private ActivityResultLauncher<String> getImageContent;
     private UserDto fetchedUserDto;
     private PostDto createdPostDto;
+    private ImageView imgPostIv;
+    private EditText postContentTv;
 
     public CreatePostFragment() {
         // Required empty public constructor
@@ -72,6 +77,8 @@ public class CreatePostFragment extends Fragment implements BaseFragment {
         View view = inflater.inflate(R.layout.fragment_create_post, container, false);
 
         createAPostBtn = view.findViewById(R.id.create_post_btn);
+        imgPostIv = view.findViewById(R.id.img_post_iv);
+        postContentTv = view.findViewById(R.id.post_content_tv);
 
         setPageData();
 
@@ -106,7 +113,7 @@ public class CreatePostFragment extends Fragment implements BaseFragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        createAPostBtn.setOnClickListener(v -> getImageContent.launch("image/*"));
+        imgPostIv.setOnClickListener(v -> getImageContent.launch("image/*"));
 
         getImageContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
@@ -140,58 +147,109 @@ public class CreatePostFragment extends Fragment implements BaseFragment {
 
             Uri finalUri = uri;
 
-            PostDto postDto = PostDto.builder()
-                    .user(fetchedUserDto)
-                    .title("")
-                    .content("")
-                    .build();
+            imgPostIv.setImageURI(finalUri);
 
-            Utilities.logMessage("Trying to create post with userId " + fetchedUserDto.getId());
-
-            this.postApi.createPost(postDto, fetchedUserDto.getId()).enqueue(new Callback<PostDto>() {
+            createAPostBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onResponse(@NonNull Call<PostDto> call, @NonNull Response<PostDto> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        createdPostDto = response.body();
-
-                        Utilities.logMessage("uploading image for the created post with postId " + createdPostDto.getPostId());
-
-                        postApi.uploadPostImage(createdPostDto.getPostId(), body).enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    Utilities.logMessage("Successfully uploaded image");
-                                } else {
-                                    Utilities.logMessage(response.code()
-                                            + "\nimage  uploaded failed\n"
-                                            + response.body());
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                                Utilities.logMessage(t.getMessage());
-                            }
-                        });
-                    } else {
-                        Utilities.logApiResponse(response);
-                        Utilities.logMessage("Error while creating post");
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<PostDto> call, @NonNull Throwable t) {
-                    Utilities.logMessage(t.getMessage());
+                public void onClick(View v) {
+                    createAPost(finalUri, body);
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.homeFlContainer, new ProfileFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                 }
             });
 
+//            this.postApi.createPost(postDto, fetchedUserDto.getId()).enqueue(new Callback<PostDto>() {
+//                @Override
+//                public void onResponse(@NonNull Call<PostDto> call, @NonNull Response<PostDto> response) {
+//                    if (response.isSuccessful() && response.body() != null) {
+//                        createdPostDto = response.body();
+//
+//                        Utilities.logMessage("uploading image for the created post with postId " + createdPostDto.getPostId());
+//
+//                        postApi.uploadPostImage(createdPostDto.getPostId(), body).enqueue(new Callback<ResponseBody>() {
+//                            @Override
+//                            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+//                                if (response.isSuccessful() && response.body() != null) {
+//                                    Utilities.logMessage("Successfully uploaded image");
+//                                } else {
+//                                    Utilities.logMessage(response.code()
+//                                            + "\nimage  uploaded failed\n"
+//                                            + response.body());
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+//                                Utilities.logMessage(t.getMessage());
+//                            }
+//                        });
+//                    } else {
+//                        Utilities.logApiResponse(response);
+//                        Utilities.logMessage("Error while creating post");
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(@NonNull Call<PostDto> call, @NonNull Throwable t) {
+//                    Utilities.logMessage(t.getMessage());
+//                }
+//            });
 
         }
     }
 
-    private void createAPost() {
+    private void createAPost(Uri uri, MultipartBody.Part body) {
+
+        PostDto postDto = PostDto.builder()
+                .user(fetchedUserDto)
+                .title("")
+                .content(postContentTv.getText().toString())
+                .build();
+
+        Utilities.logMessage("Trying to create post with userId " + fetchedUserDto.getId());
+
+        this.postApi.createPost(postDto, fetchedUserDto.getId()).enqueue(new Callback<PostDto>() {
+            @Override
+            public void onResponse(@NonNull Call<PostDto> call, @NonNull Response<PostDto> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    createdPostDto = response.body();
+
+                    Utilities.logMessage("uploading image for the created post with postId " + createdPostDto.getPostId());
+
+                    postApi.uploadPostImage(createdPostDto.getPostId(), body).enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Utilities.logMessage("Successfully uploaded image");
+                            } else {
+                                Utilities.logMessage(response.code()
+                                        + "\nimage  uploaded failed\n"
+                                        + response.body());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                            Utilities.logMessage(t.getMessage());
+                        }
+                    });
+                } else {
+                    Utilities.logApiResponse(response);
+                    Utilities.logMessage("Error while creating post");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PostDto> call, @NonNull Throwable t) {
+                Utilities.logMessage(t.getMessage());
+            }
+        });
+
 
     }
+
 
     @Override
     public void setPageData() {

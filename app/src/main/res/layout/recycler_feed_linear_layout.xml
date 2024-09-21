@@ -1,94 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:padding="5dp"
-        android:background="#0C0C0C"
-        >
-
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_margin="5dp"
-            android:id="@+id/imgfeedProfilePic"
-            android:background="@drawable/circle_img_bg"
-            android:src="@drawable/c"/>
+            android:id="@+id/user_feed_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/c" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:padding="5dp"
-            android:layout_height="70dp" >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:id="@+id/txtFeedUsername"
-                android:textColor="@color/white"
-                android:text="Username"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/txtFeedUserbio"
-                android:textStyle="italic"
-                android:textSize="15sp"
-                android:textColor="@color/white"
-                android:layout_marginLeft="5dp"
-                android:text="Userbio"/>
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/feed_user_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="19dp"
+            android:text="Username"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
-
-
     <ImageView
+        android:id="@+id/feed_img"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:id="@+id/imgfeedPic"
+        android:layout_height="500dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/an18"/>
-
+        android:src="@drawable/an18" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:padding="5dp"
-        android:background="#0A0B0B"
-        android:layout_height="50dp">
+        android:padding="5dp">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="5dp"
             android:id="@+id/imgLike"
-            android:src="@drawable/heart1" />
-
-        <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="5dp"
+            android:src="@drawable/baseline_thumb_up_off_alt_24" />
+
+        <ImageView
             android:id="@+id/imgComment"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="3dp"
+            android:padding="5dp"
             android:src="@drawable/baseline_comment_24" />
 
         <ImageView
+            android:id="@+id/imgShare"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="5dp"
             android:layout_marginLeft="3dp"
-            android:id="@+id/imgShare"
+            android:padding="5dp"
             android:src="@drawable/baseline_share_24" />
 
         <View
@@ -99,27 +72,19 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="5dp"
             android:layout_marginLeft="3dp"
+            android:padding="5dp"
             android:src="@drawable/baseline_more_vert_24" />
-
-
     </LinearLayout>
 
-
-    <EditText
+    <TextView
+        android:id="@+id/feed_content_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Add your Comment"
-        android:inputType="text"/>
+        android:padding="5dp" />
 
-    <TextView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textSize="20dp"
-        android:textColor="@color/appBackgroundColor"
-        android:text="View Comments..." />
-
-
-
+        android:layout_height="3dp"
+        android:background="@color/appColor" />
 </LinearLayout>

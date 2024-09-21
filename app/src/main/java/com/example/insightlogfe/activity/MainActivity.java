@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.insightlogfe.R;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button btnSignIn, btnSignUp;
+    private TextView btnSignIn, btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

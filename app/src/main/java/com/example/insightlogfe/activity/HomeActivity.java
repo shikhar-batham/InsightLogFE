@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
-        homeBottomNavigationContainer.setSelectedItemId(R.id.nav_home);
+        homeBottomNavigationContainer.setSelectedItemId(R.id.nav_profile);
     }
 
     public void loadFrag(Fragment fragment, int flag) {

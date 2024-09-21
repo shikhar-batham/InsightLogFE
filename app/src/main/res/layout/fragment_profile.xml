@@ -6,59 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rellay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00BCD4"
-        android:paddingBottom="20dp">
+        android:background="@color/appDarkColor"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/imgUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/circle_img_bg">
-
-            <ImageView
-                android:id="@+id/user_profile_img"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginBottom="9dp"
-                android:adjustViewBounds="true"
-                android:padding="1dp"
-                android:src="@drawable/ic_person" />
-
-
-        </RelativeLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile_img"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/c" />
 
         <TextView
             android:id="@+id/name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imgUser"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5sp"
+            android:layout_marginBottom="4dp"
             android:fontFamily="sans-serif-light"
-            android:text="username"
+            android:gravity="center"
+            android:text="@string/username"
             android:textColor="@color/white"
-            android:textSize="32sp" />
+            android:textSize="20sp" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/baseline_settings_24" />
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linlay1"
@@ -67,82 +41,7 @@
         android:layout_below="@id/rellay1"
         android:orientation="horizontal">
 
-        <!--        <RelativeLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:background="#72D6E3"-->
-        <!--            android:gravity="center"-->
-        <!--            android:paddingTop="5dp"-->
-        <!--            android:paddingBottom="5dp">-->
-
-        <!--            <LinearLayout-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="center_horizontal"-->
-        <!--                android:orientation="vertical">-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:fontFamily="sans-serif-light"-->
-        <!--                    android:text="453K"-->
-        <!--                    android:textColor="@color/black"-->
-        <!--                    android:textSize="25sp" />-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:fontFamily="sans-serif-light"-->
-        <!--                    android:text="followers"-->
-        <!--                    android:textAllCaps="true"-->
-        <!--                    android:textColor="@color/black"-->
-        <!--                    android:textSize="13sp" />-->
-
-        <!--            </LinearLayout>-->
-
-        <!--        </RelativeLayout>-->
-
-        <!--        <RelativeLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:background="#407CAC"-->
-        <!--            android:gravity="center"-->
-        <!--            android:paddingTop="5dp"-->
-        <!--            android:paddingBottom="5dp">-->
-
-        <!--            <LinearLayout-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="center_horizontal"-->
-        <!--                android:orientation="vertical">-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:fontFamily="sans-serif-light"-->
-        <!--                    android:text="873"-->
-        <!--                    android:textColor="@color/white"-->
-        <!--                    android:textSize="25sp" />-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:fontFamily="sans-serif-light"-->
-        <!--                    android:text="following"-->
-        <!--                    android:textAllCaps="true"-->
-        <!--                    android:textColor="@color/white"-->
-        <!--                    android:textSize="13sp" />-->
-
-        <!--            </LinearLayout>-->
-
-        <!--        </RelativeLayout>-->
-
     </LinearLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -166,7 +65,15 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/recycler_profile_grid_layout" />
 
-
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/profile_frag_pgbr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:visibility="gone" />
 </RelativeLayout>

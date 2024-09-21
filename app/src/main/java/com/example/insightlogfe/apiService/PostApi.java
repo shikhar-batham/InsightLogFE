@@ -27,4 +27,9 @@ public interface PostApi {
     @GET("/api/v1/post/getPostsByUserId/{userId}")
     Call<List<PostDto>> getAllPostsByUserId(@Path("userId") Integer userId);
 
+    @GET("/api/v1/post/downloadPostImage/{postId}")
+    Call<ResponseBody> downloadPostImage(@Path("postId") int postId);
+
+    @GET("/api/v1/post/getAllPosts")
+    Call<List<PostDto>>getAllPosts();
 }

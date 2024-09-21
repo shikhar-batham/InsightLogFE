@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +46,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -69,6 +73,7 @@ public class ProfileFragment extends Fragment implements BaseFragment {
     private RecyclerView profilePageRv;
     private ArrayList<UserPostModel> userPostModelList;
     private UserProfileAdapter userProfileAdapter;
+    private ProgressBar profileProgressBar;
 
     public ProfileFragment() {
     }
@@ -88,11 +93,15 @@ public class ProfileFragment extends Fragment implements BaseFragment {
         profilePageRv = view.findViewById(R.id.profile_page_rv);
         userProfileImage = view.findViewById(R.id.user_profile_img);
         userNameTv = view.findViewById(R.id.name_tv);
+        profileProgressBar = view.findViewById(R.id.profile_frag_pgbr);
+
+        profileProgressBar.setVisibility(View.VISIBLE);
+
+        userPostModelList = new ArrayList<>();
 
         setPageData();
 
         return view;
-
     }
 
     @Override
@@ -121,17 +130,12 @@ public class ProfileFragment extends Fragment implements BaseFragment {
 
     private void setPostData() {
         getAllPostsUser();
-
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),3);
-        gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        userProfileAdapter = new UserProfileAdapter(userPostModelList);
-        profilePageRv.setAdapter(userProfileAdapter);
-        profilePageRv.setLayoutManager(gridLayoutManager);
     }
 
     private void getAllPostsUser() {
 
         Utilities.logError("Setting up posts for userId " + fetchedUserDto.getId());
+
         this.postApi.getAllPostsByUserId(fetchedUserDto.getId()).enqueue(new Callback<List<PostDto>>() {
             @Override
             public void onResponse(@NonNull Call<List<PostDto>> call, @NonNull Response<List<PostDto>> response) {
@@ -140,12 +144,35 @@ public class ProfileFragment extends Fragment implements BaseFragment {
                     Utilities.logMessage("Fetching posts");
                     List<PostDto> fetchedUserPostList = response.body();
 
-                    Utilities.logMessage("Successfully fetched all posts of user with list size "+fetchedUserPostList.size());
+                    Utilities.logMessage("Successfully fetched all posts of user with list size " + fetchedUserPostList.size());
 
                     for (PostDto postDto : fetchedUserPostList) {
-                        userPostModelList.add(new UserPostModel(postDto.getImage()));
+                        postApi.downloadPostImage(postDto.getPostId()).enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                                Bitmap bitmap = null;
+                                if (response.isSuccessful() && response.body() != null) {
+                                    bitmap = ImageUtils.getImageFromResponse(response);
+                                    userPostModelList.add(new UserPostModel(bitmap));
+                                    Utilities.logMessage("Fetched post image with post id " + postDto.getPostId());
+                                } else {
+                                    Utilities.logMessage("Failed to fetch image of the post with postId " + postDto.getPostId());
+                                }
+                                userProfileAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                                Utilities.logMessage(t.getMessage());
+                            }
+                        });
                     }
-                    userProfileAdapter.notifyDataSetChanged();
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                    gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                    userProfileAdapter = new UserProfileAdapter(userPostModelList, getContext());
+                    profilePageRv.setAdapter(userProfileAdapter);
+                    profilePageRv.setLayoutManager(gridLayoutManager);
                 } else {
                     Utilities.logApiError(response);
                 }
@@ -157,9 +184,12 @@ public class ProfileFragment extends Fragment implements BaseFragment {
                 Utilities.logMessage(t.getMessage());
             }
         });
-
-//        userPostModelList = GridConstants.GridData();
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                profileProgressBar.setVisibility(View.GONE);
+            }
+        }, 5000);
     }
 
     @Override

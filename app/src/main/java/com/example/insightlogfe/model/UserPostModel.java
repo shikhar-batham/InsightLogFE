@@ -1,17 +1,19 @@
 package com.example.insightlogfe.model;
 
+import android.graphics.Bitmap;
+
 public class UserPostModel {
-    private  String image;
+    private Bitmap imageBitmap;
 
-    public String getImage() {
-        return image;
+    public UserPostModel(Bitmap imageBitmap) {
+        this.imageBitmap = imageBitmap;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public Bitmap getImageBitmap() {
+        return imageBitmap;
     }
 
-    public UserPostModel(String image) {
-        this.image = image;
+    public void setImageBitmap(Bitmap imageBitmap) {
+        this.imageBitmap = imageBitmap;
     }
 }
