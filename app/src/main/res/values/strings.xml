@@ -5,4 +5,11 @@
     <string name="post">Post</string>
     <string name="username">username</string>
     <string name="write_something_here">Write something here....</string>
+    <string name="welcome">Welcome!</string>
+    <string name="do_not_have_an_account">Do not have an Account?</string>
+    <string name="login">Login</string>
+    <string name="log_out">Log Out</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="see_all"><![CDATA[See All>>]]></string>
 </resources>

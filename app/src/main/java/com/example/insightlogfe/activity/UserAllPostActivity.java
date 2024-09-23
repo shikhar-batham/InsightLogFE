@@ -1,19 +1,19 @@
-package com.example.insightlogfe.fragments;
+package com.example.insightlogfe.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.insightlogfe.adapters.FeedAdapter;
+import com.example.insightlogfe.Constants.IntentConstants;
 import com.example.insightlogfe.Constants.PrefConstants;
 import com.example.insightlogfe.Constants.PreferenceManager;
 import com.example.insightlogfe.R;
@@ -33,76 +33,76 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements BaseFragment {
+public class UserAllPostActivity extends AppCompatActivity implements BaseActivity {
+    private RecyclerView allPostRv;
     private PreferenceManager preferenceManager;
-    private int userId;
     private String authToken;
-    private RetrofitService rfs;
-    private UserApi userApi;
+    private int userId;
+    private String userEmail;
     private PostApi postApi;
-    private ArrayList<FeedModel> feedModelList;
-    private RecyclerView feedRv;
+    private UserApi userApi;
+    private RetrofitService rfs;
+    private ArrayList<FeedModel> postModelList;
     private FeedAdapter feedAdapter;
-    private ProgressBar homeProgressBar;
-
-    public HomeFragment() {
-
-    }
+    private ProgressBar allPostPgBar;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         getPreferences();
 
         rfs = new RetrofitService();
-        userApi = rfs.getRetrofit().create(UserApi.class);
-        postApi = rfs.getRetrofit().create(PostApi.class);
+        postApi=rfs.getRetrofit().create(PostApi.class);
+        userApi=rfs.getRetrofit().create(UserApi.class);
 
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        setContentView(R.layout.activity_user_all_post);
 
-        feedRv = view.findViewById(R.id.feed_rv);
-        homeProgressBar = view.findViewById(R.id.home_progress_bar);
+        allPostRv = findViewById(R.id.all_post_rv);
+        allPostPgBar = findViewById(R.id.all_post_pg_bar);
 
-        homeProgressBar.setVisibility(View.VISIBLE);
+        allPostPgBar.setVisibility(View.VISIBLE);
 
-        feedModelList = new ArrayList<>();
+        postModelList = new ArrayList<>();
 
         setPageData();
-
-        return view;
     }
 
-    @Override
-    public void
-    onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void getIntents() {
+        Intent intent = getIntent();
+        userId= intent.getIntExtra(IntentConstants.INTENT_USER_ID,-1);
+        Utilities.logMessage("User id from intent " + userId);
     }
 
-    @Override
-    public void setPageData() {
-        getPageData();
+    private void setPageData() {
+        getIntents();
+        getAllPostsUser();
     }
 
-    private void getPageData() {
+    private void getAllPostsUser() {
 
-        this.postApi.getAllPosts().enqueue(new Callback<List<PostDto>>() {
+        Utilities.logError("Setting up posts for userId " + userId);
+
+        this.postApi.getAllPostsByUserId(userId).enqueue(new Callback<List<PostDto>>() {
             @Override
             public void onResponse(@NonNull Call<List<PostDto>> call, @NonNull Response<List<PostDto>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<PostDto> fetchedPosts = response.body();
-                    Utilities.logMessage("fetched posts for feed");
 
-                    for (PostDto postDto : fetchedPosts) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Utilities.logMessage("Fetching posts");
+                    List<PostDto> fetchedUserPostList = response.body();
+
+                    Utilities.logMessage("Successfully fetched all posts of user with list size " + fetchedUserPostList.size());
+
+                    for (PostDto postDto : fetchedUserPostList) {
                         postApi.downloadPostImage(postDto.getPostId()).enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                Bitmap postImageBitmap = null;
+                                Bitmap fetchedPostImageBitmap = null;
                                 if (response.isSuccessful() && response.body() != null) {
-                                    postImageBitmap = ImageUtils.getImageFromResponse(response);
-                                    Utilities.logMessage("Downloaded post image for feed");
-                                    Bitmap finalPostImageBitmap = postImageBitmap;
+                                    fetchedPostImageBitmap = ImageUtils.getImageFromResponse(response);
+                                    Utilities.logMessage("Fetched post image with post id " + postDto.getPostId());
+
+                                    Bitmap finalFetchedPostImageBitmap = fetchedPostImageBitmap;
                                     userApi.downloadUserProfileImage(postDto.getUser().getId()).enqueue(new Callback<ResponseBody>() {
                                         @Override
                                         public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment implements BaseFragment {
                                                 Utilities.logMessage("Failed to download user profile image for feed");
                                             }
 
-                                            feedModelList.add(new FeedModel(userImageBitmap, finalPostImageBitmap, postDto.getUser().getUserUniqueName(), postDto.getContent()));
+                                            postModelList.add(new FeedModel(userImageBitmap, finalFetchedPostImageBitmap, postDto.getUser().getUserUniqueName(), postDto.getContent()));
                                             feedAdapter.notifyDataSetChanged();
                                         }
 
@@ -123,53 +123,48 @@ public class HomeFragment extends Fragment implements BaseFragment {
                                             Utilities.logMessage(t.getMessage());
                                         }
                                     });
-                                    Utilities.logMessage("Fetched post image with post id " + postDto.getPostId());
                                 } else {
                                     Utilities.logMessage("Failed to fetch image of the post with postId " + postDto.getPostId());
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                                Utilities.logMessage(t.getMessage());
                             }
                         });
                     }
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
                     linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                    feedAdapter = new FeedAdapter(feedModelList, getContext());
-                    feedRv.setAdapter(feedAdapter);
-                    feedRv.setLayoutManager(linearLayoutManager);
+                    feedAdapter = new FeedAdapter(postModelList, getApplicationContext());
+                    allPostRv.setAdapter(feedAdapter);
+                    allPostRv.setLayoutManager(linearLayoutManager);
                 } else {
-                    Utilities.logMessage("Could not fetch posts");
+                    Utilities.logApiError(response);
                 }
             }
 
             @Override
             public void onFailure(Call<List<PostDto>> call, Throwable t) {
-
+                Utilities.logMessage("Failed to fetch all posts.");
+                Utilities.logMessage(t.getMessage());
             }
         });
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                homeProgressBar.setVisibility(View.GONE);
+                allPostPgBar.setVisibility(View.GONE);
             }
         }, 5000);
     }
 
     @Override
     public void getPreferences() {
-        preferenceManager = new PreferenceManager(requireActivity());
-        if (preferenceManager.getString(PrefConstants.U_USER_ID) != null)
-            userId = Integer.parseInt(preferenceManager.getString(PrefConstants.U_USER_ID));
+        preferenceManager = new PreferenceManager(getApplicationContext());
+//        if (preferenceManager.getString(PrefConstants.U_USER_ID) != null)
+//            userId = Integer.parseInt(preferenceManager.getString(PrefConstants.U_USER_ID));
+        userEmail = preferenceManager.getString(PrefConstants.USER_EMAIL);
         authToken = preferenceManager.getString(PrefConstants.USER_AUTH_TOKEN);
     }
-
-    @Override
-    public String toastErrors(String message) {
-        return null;
-    }
-
-
 }

@@ -1,35 +1,37 @@
 package com.example.insightlogfe.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.insightlogfe.R;
 import com.example.insightlogfe.apiService.AuthApi;
 import com.example.insightlogfe.payload.UserDto;
 import com.example.insightlogfe.retrofit.RetrofitService;
 
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    EditText firstNameEdt, lastNameEdt, usernameEdt, emailEdt, passwordEdt, confirmPasswordEt;
-    Button sighUpButton;
+    private EditText firstNameEdt, lastNameEdt, usernameEdt, emailEdt, passwordEdt, confirmPasswordEt;
+    private Button sighUpButton;
+    private RetrofitService rfs;
+    private AuthApi authApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        this.rfs = new RetrofitService();
+        authApi = rfs.getRetrofit().create(AuthApi.class);
 
         firstNameEdt = findViewById(R.id.firstName);
         lastNameEdt = findViewById(R.id.lastName);
@@ -39,17 +41,11 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPasswordEt = findViewById(R.id.confirmPassword);
         sighUpButton = findViewById(R.id.sighUpButton);
 
-        sighUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
+        sighUpButton.setOnClickListener(v -> registerUser());
 
     }
 
     private void registerUser() {
-
 
         String password = passwordEdt.getText().toString();
         String confirmPassword = confirmPasswordEt.getText().toString();
@@ -60,21 +56,19 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         UserDto userDto = createUserDto();
-
-        RetrofitService retrofitService = new RetrofitService();
-        AuthApi authApi = retrofitService.getRetrofit().create(AuthApi.class);
         authApi.registerNewUser(userDto).enqueue(new Callback<UserDto>() {
             @Override
             public void onResponse(@NonNull Call<UserDto> call, @NonNull Response<UserDto> response) {
                 if (response.isSuccessful()) {
                     UserDto apiUserDto = response.body();
-                    logMessage("Api call successful");
+                    logMessage("User Registered successfully with email " + userDto.getEmail());
                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 }
 
             }
+
             @Override
-            public void onFailure(Call<UserDto> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserDto> call, @NonNull Throwable t) {
                 logMessage("Api response Error " + t.getMessage());
             }
         });

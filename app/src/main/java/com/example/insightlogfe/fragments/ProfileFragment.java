@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +25,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.insightlogfe.Adapters.UserProfileAdapter;
+import com.example.insightlogfe.adapters.UserProfileAdapter;
 import com.example.insightlogfe.Constants.IntentConstants;
 import com.example.insightlogfe.Constants.PrefConstants;
 import com.example.insightlogfe.Constants.PreferenceManager;
 import com.example.insightlogfe.R;
 import com.example.insightlogfe.activity.CropperActivity;
+import com.example.insightlogfe.activity.SettingActivity;
+import com.example.insightlogfe.activity.UserAllPostActivity;
 import com.example.insightlogfe.apiService.PostApi;
 import com.example.insightlogfe.apiService.UserApi;
 import com.example.insightlogfe.model.UserPostModel;
@@ -46,7 +47,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -56,7 +56,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileFragment extends Fragment implements BaseFragment {
-    private ImageView userProfileImage;
+    private ImageView userProfileImage, btnSetting;
     private RetrofitService rfs;
     private UserApi userApi;
     private PostApi postApi;
@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment implements BaseFragment {
     private static final int IMAGE_CROPPER_REQUEST_CODE = 1001;
     private static final int IMAGE_CROPPER_RESULT_CODE = 1002;
     private ActivityResultLauncher<String> getImageContent;
-    private TextView userNameTv;
+    private TextView userNameTv, seeAllPostTv;
     private RecyclerView profilePageRv;
     private ArrayList<UserPostModel> userPostModelList;
     private UserProfileAdapter userProfileAdapter;
@@ -94,12 +94,29 @@ public class ProfileFragment extends Fragment implements BaseFragment {
         userProfileImage = view.findViewById(R.id.user_profile_img);
         userNameTv = view.findViewById(R.id.name_tv);
         profileProgressBar = view.findViewById(R.id.profile_frag_pgbr);
+        btnSetting = view.findViewById(R.id.setting_btn);
+        seeAllPostTv = view.findViewById(R.id.see_all_post_tv);
 
         profileProgressBar.setVisibility(View.VISIBLE);
 
         userPostModelList = new ArrayList<>();
 
         setPageData();
+
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settingIntent = new Intent(getContext(), SettingActivity.class);
+                startActivity(settingIntent);
+            }
+        });
+
+        seeAllPostTv.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), UserAllPostActivity.class);
+            intent.putExtra(IntentConstants.INTENT_USER_ID, fetchedUserDto.getId());
+            startActivity(intent);
+            Utilities.logMessage("Passed userid "+fetchedUserDto.getId()+" from profile fragment to user all post activity");
+        });
 
         return view;
     }

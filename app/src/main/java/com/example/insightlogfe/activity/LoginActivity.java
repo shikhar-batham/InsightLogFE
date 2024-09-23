@@ -2,10 +2,12 @@ package com.example.insightlogfe.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText emailEdt, passwordEdt;
     private Button loginButton;
     private PreferenceManager preferenceManager;
@@ -46,15 +47,12 @@ public class LoginActivity extends AppCompatActivity {
         emailEdt = findViewById(R.id.emailEdt);
         passwordEdt = findViewById(R.id.passwordEdt);
 
+
         loginButton = findViewById(R.id.loginButton);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginUser();
-            }
+        loginButton.setOnClickListener(v -> {
+            loginUser();
         });
-
     }
 
     private void loginUser() {
@@ -98,11 +96,9 @@ public class LoginActivity extends AppCompatActivity {
                 logMessage("Failed to login " + t.getMessage());
             }
         });
-
     }
 
     private static void logMessage(String msg) {
-
         Log.i("[INFO]", "-->" + msg);
     }
 
